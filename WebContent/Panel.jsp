@@ -105,7 +105,13 @@ html, body, .container, #map {
     #raza{
     width:50px;
     }
-   
+   #dir{
+    display: block;
+         position: absolute;
+         z-index: 100;
+         top: 500px;
+         left: 10px;
+   }
  
      .arcgisSearch .searchGroup .searchInput {
    width:100px;
@@ -229,7 +235,10 @@ span.psw {
 <script>
 var map;
 require([
+        
   "esri/map",
+  "esri/urlUtils",
+  "esri/dijit/Directions",
   "esri/layers/FeatureLayer", 
   "esri/tasks/query", "esri/geometry/Circle",
   "esri/graphic", "esri/InfoTemplate", "esri/symbols/SimpleMarkerSymbol",
@@ -247,7 +256,7 @@ require([
     "dijit/layout/BorderContainer",
     "dijit/layout/ContentPane",
    
-], function(Map, FeatureLayer,
+], function(Map,   urlUtils, Directions, FeatureLayer,
         Query, Circle,
         Graphic, InfoTemplate, SimpleMarkerSymbol,
         SimpleLineSymbol, SimpleFillSymbol, SimpleRenderer,
@@ -269,6 +278,29 @@ require([
 });
  map.addLayer(featureLayer);
  
+ urlUtils.addProxyRule({
+     urlPrefix: "route.arcgis.com",
+     proxyUrl: "/sproxy/"
+   });
+   urlUtils.addProxyRule({
+     urlPrefix: "traffic.arcgis.com",
+     proxyUrl: "/sproxy/"
+   });
+   
+   var directions = new Directions({
+       map: map
+       // --------------------------------------------------------------------
+       // New constuctor option and property showSaveButton added at version
+       // 3.17 to allow saving route. For more information see the API Reference.
+       // https://developers.arcgis.com/javascript/3/jsapi/directions-amd.html#showsavebutton
+       //
+       // Uncomment the line below to add the save button to the Directions widget
+       // --------------------------------------------------------------------
+       // , showSaveButton: true
+     },"dir");
+     directions.startup();
+   
+   
  var symbol = new SimpleMarkerSymbol(
          SimpleMarkerSymbol.STYLE_CIRCLE, 
          12, 
@@ -475,7 +507,7 @@ data-dojo-props="design:'headline',gutters:false">
   </div>
   <div id="search"></div>
  
- 
+  <div id="dir"></div>
 
 </div> 
 
