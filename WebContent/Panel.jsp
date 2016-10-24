@@ -295,7 +295,7 @@ require([
        // https://developers.arcgis.com/javascript/3/jsapi/directions-amd.html#showsavebutton
        //
        // Uncomment the line below to add the save button to the Directions widget
-       // --------------------------------------------------------------------
+       // ---------------------------------------------------------------------
        // , showSaveButton: true
      },"dir");
      directions.startup();
